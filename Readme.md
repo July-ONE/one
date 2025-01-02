@@ -6,7 +6,7 @@
 
 
 
-## 1  系统架构
+## 1、系统架构
 
 在统一中压配电终端通用平台上选用HPM6750/6450作为保护板主控芯片，根据层次化设计原则，在系统结构方面将系统分为**应用层**、**软件包**、**标准接口层**、**驱动层**、**硬件层**和**内核层**六层结构，各层次结构如下图所示：
 
@@ -26,7 +26,7 @@
 
 **应用层**包含与业务相关的程序，包括交采、保护、通信、告警、录波、存储等，是FTU/DTU的业务核心。
 
-## 2  操作系统和文件系统的移植
+## 2、操作系统和文件系统的移植
 
 ​	内容...	
 
@@ -46,7 +46,7 @@
 
 
 
-## 3  标准化设备驱动框架
+## 3、标准化设备驱动框架
 
 标准化设备驱动框架在驱动中引入I/O设备模型框架，硬件和应用程序之间，共分成三层，从上到下分别是 I/O 设备管理层、设备驱动框架层、设备驱动层。驱动框架如下图所示：
 
@@ -54,7 +54,7 @@
 
 最终实现平台驱动采用统一接口方案，系统使用人员（应用程序设计人员）拿到系统后，不管是什么样的设备，最终操作的接口是统一的。设计过程中，采用模块化设计思路，按照自顶向下的设计原则，采用整体抽象局部细化的设计方式，先对顶层功能进行抽象建模，再对每一个模块详细设计。
 
-### 3.1  I/O设备管理层
+### 3.1、I/O设备管理层
 
 I/O设备管理层是用户实际使用的层次，在该层次，是对所有设备功能的抽象，抽取不同设备的共性，屏蔽不同设备的差异，不论用户访问的是GPIO、串口、SPI还是其他任何设备，都采用统一接口。我们把接口抽象为*open*，*close*，*read*，*write*，*control*，*rx_indicate*，*tx_complete*这7类。（其中*rx_indicate*与*tx_complete*两类抽象的是中断的接收完成和发送完成）
 
@@ -68,25 +68,25 @@ I/O设备管理层是用户实际使用的层次，在该层次，是对所有�
 | 6    | device_set_rx_indicate(uint hand, ) | 设置接收完成回调函数。 |
 | 7    | device_set_tx_complete(uint hand, ) | 设置发送完成回调函数。 |
 
-### 3.2  设备驱动框架层
+### 3.2、设备驱动框架层
 
-#### 3.2.1  设备分类
+#### 3.2.1、设备分类
 
-##### 3.2.1.1  总线
+##### 3.2.1.1、总线
 
-| 序号  | 总线类型 | 驱动框架    | 数量  | 备注             |
-| ----- | -------- | ----------- | ----- | ---------------- |
-| 1     | UART     | UART        | 15路  |                  |
-| 2     | SPI      | SPI/SPI_DEV | 4     |                  |
-| 3     | IIC      | IIC         | 2     |                  |
-| 4     | CAN      | CAN         | 1     |                  |
-| ==5== | ==RMII== | ==RMII==    | ==2== | ==不用驱动框架== |
-| ==6== | ==USB==  | ==USB==     | ==1== | ==不用驱动框架== |
-| ==7== | ==FEMC== | ==FEMC==    | ==1== | ==不用驱动框架== |
-| 8     | GPIO     | GPIO        |       |                  |
-| ==9== | ==SDIO== | ==SDIO==    | ==1== | ==不用驱动框架== |
+| 序号 | 总线类型 | 驱动框架    | 数量 | 备注         |
+| ---- | -------- | ----------- | ---- | ------------ |
+| 1    | UART     | UART        | 15路 |              |
+| 2    | SPI      | SPI/SPI_DEV | 4    |              |
+| 3    | IIC      | IIC         | 2    |              |
+| 4    | CAN      | CAN         | 1    |              |
+| 5    | RMII     | RMII        | 2    | 不用驱动框架 |
+| 6    | USB      | USB         | 1    | 不用驱动框架 |
+| 7    | FEMC     | FEMC        | 1    | 不用驱动框架 |
+| 8    | GPIO     | GPIO        |      |              |
+| 9    | SDIO     | SDIO        | 1    | 不用驱动框架 |
 
-##### 3.2.1.2  设备
+##### 3.2.1.2、设备
 
 <table> 
 	<thead> 
@@ -107,23 +107,23 @@ I/O设备管理层是用户实际使用的层次，在该层次，是对所有�
             <td>SDRAM</td>
             <td>SCB33S256160AE</td>
             <td>FEMC</td>
-            <td> </td>
-            <td> </td>
+            <td></td>
+            <td></td>
         </tr>
         <tr> 
             <td>2</td> 
             <td>EEPROM/铁电</td>
             <td>FM24C128D</td>
             <td>SPI</td>
-            <td> </td>
-            <td> </td>
+            <td></td>
+            <td></td>
         </tr>
         <tr> 
             <td>3</td> 
             <td>SD卡</td>
             <td>XTSDG04GWSIGA</td>
             <td>SPI/SD</td>
-            <td> </td>
+            <td></td>
             <td>文件系统</td>
         </tr>
         <tr> 
@@ -131,123 +131,193 @@ I/O设备管理层是用户实际使用的层次，在该层次，是对所有�
             <td>NOR_flash</td>
             <td>SCB33S256160AE</td>
             <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td></td>
+            <td></td>
         </tr>
         <tr> 
             <td>5</td> 
             <td>时钟</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>RTC</td>
+            <td>RX8025</td>
+            <td>IIC</td>
+            <td>RTC</td>
+            <td></td>
         </tr>
         <tr> 
             <td>6</td> 
             <td rowspan="3">交采</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td rowspan="3">ADC</td>
+            <td>7606</td>
+            <td>SPI/QSPI/并行</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr> 
+            <td></td>
+            <td>7616</td>
+            <td>SPI/QSPI/并行</td>
+            <td>ADC</td>
+            <td></td>
+        </tr>
+        <tr> 
+            <td></td>
+            <td>内部ADC</td>
+            <td>/</td>
+            <td>ADC</td>
+            <td></td>
         </tr>
         <tr> 
             <td>7</td> 
             <td rowspan="7">传感器</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>GPS（北斗）</td>
+            <td></td>
+            <td>UART+GPIO</td>
+            <td>传感器</td>、
+          	<td></td>            
+        </tr>
+        <tr>  
+            <td></td>
+            <td>线损通讯</td>
+            <td></td>
+            <td>UART</td>
+            <td>传感器</td>
+          	<td></td>            
+        </tr>
+        <tr>  
+            <td></td>
+            <td>数字式FTU解码模块</td>
+            <td></td>
+            <td>UART/IIC/FEMC</td>
+            <td>传感器</td>
+          	<td></td>            
+        </tr>
+        <tr>  
+            <td></td>
+            <td>开关状态监测</td>
+            <td></td>
+            <td>UART</td>
+            <td>传感器</td>
+          	<td></td>            
+        </tr>
+        <tr>  
+            <td></td>
+            <td>行波测距模块</td>
+            <td></td>
+            <td>UART</td>
+            <td>传感器</td>
+          	<td></td>            
+        </tr>
+        <tr>  
+            <td></td>
+            <td>温湿度传感器</td>
+            <td></td>
+            <td>IIC</td>
+            <td>传感器</td>
+          	<td></td>            
+        </tr>
+        <tr>  
+            <td></td>
+            <td>智能电源模块</td>
+            <td></td>
+            <td>GPIO+UART</td>
+            <td>控制</td>
+          	<td></td>            
         </tr>
         <tr> 
             <td>8</td> 
-            <td>定时器</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>定时器</td>
+            <td></td>
+            <td></td>
+            <td>Timer</td>
+            <td></td>
         </tr>
         <tr> 
             <td>9</td> 
             <td rowspan="2">串口转发</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>无线模块</td>
+            <td></td>
+            <td>UART</td>
+            <td>AT</td>
+            <td></td>
+        </tr>
+        <tr>  
+            <td></td>
+            <td>蓝牙模块</td>
+            <td>1475</td>
+            <td>UART+GPIO</td>
+            <td>AT</td>
+          	<td></td>            
         </tr>
         <tr> 
-            <td>10</td> 
-            <td>串口转发</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>10</td>
+            <td>扩展IO</td> 
+            <td>扩展GPIO</td> 
+            <td></td>
+            <td>IIC</td>
+            <td>整合到GPIO</td>
+            <td></td>
         </tr>
         <tr> 
             <td>11</td> 
+            <td>遥控</td>
             <td>遥控</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td></td>
+            <td>GPIO</td>
+            <td>遥控</td>
+            <td>包含合闸、分闸、告警灯、运行灯、电池活化开、电池活化关、遥控使能。（软遥控和赢遥控之间的映射）</td>
         </tr>
         <tr> 
             <td>12</td> 
             <td>遥信</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>遥信输入</td>
+            <td></td>
+            <td>GPIO</td>
+            <td>遥信</td>
+            <td>（软遥信和赢遥信之间的映射）</td>
         </tr>
         <tr> 
             <td>13</td> 
-            <td>遥控</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td></td> 
+            <td>USB</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>USB驱动框架</td>
         </tr>
         <tr> 
             <td>14</td> 
-            <td>遥控</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td></td> 
+            <td>液晶板</td>
+            <td></td>
+            <td>UART/SPI</td>
+            <td></td>
+            <td>GUI</td>
         </tr>
         <tr> 
             <td>15</td> 
             <td>网口</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>PHY</td>
+            <td></td>
+            <td>RMI和GPIO</td>
+            <td></td>
+            <td>网络驱动框架</td>
         </tr>
         <tr> 
             <td>16</td> 
             <td>加密</td> 
-            <td>NOR_flash</td>
-            <td>SCB33S256160AE</td>
-            <td>XPI接口</td>
-            <td> </td>
-            <td> </td>
+            <td>加密芯片</td>
+            <td>1161Y</td>
+            <td></td>
+            <td></td>
+            <td>以包的形式发布</td>
         </tr>
     </tbody>
 </table>
 
-#### 3.2.2  驱动框架实现
 
-##### 3.2.2.1  总线驱动框架实现
+#### 3.2.2、驱动框架实现
+
+##### 3.2.2.1、总线驱动框架实现
 
 （1）USART
 
@@ -521,5 +591,5 @@ I/O设备管理层是用户实际使用的层次，在该层次，是对所有�
     </tbody> 
 </table>
 
-## 4  工作计划
+## 4、工作计划
 
